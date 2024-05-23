@@ -127,7 +127,7 @@ fun RegistrationScreen(
             Text(
                 text = stringResource(id = R.string.sizde_akkaunt_bar_ma),
                 modifier = Modifier
-                    .clickable { TODO() }
+                    .clickable {  }
                     .fillMaxWidth(),
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.primary,
