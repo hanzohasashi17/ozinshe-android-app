@@ -14,7 +14,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieNetworkDataSourceImpl: MovieNetworkDataSourceImpl,
 ) : MovieRepository {
     override suspend fun getMainMovies(): List<MainMovie> {
-        return  movieNetworkDataSourceImpl.getMainMovies()
+        return movieNetworkDataSourceImpl.getMainMovies()
     }
 
     override suspend fun getMoviesByCategory(): List<MovieByCategory> {

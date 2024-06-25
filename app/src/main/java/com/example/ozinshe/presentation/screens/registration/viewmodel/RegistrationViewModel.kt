@@ -1,5 +1,6 @@
 package com.example.ozinshe.presentation.screens.registration.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ozinshe.data.datasources.localStorage.SharedPreferencesManager
@@ -30,14 +31,13 @@ class RegistrationViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     val user = authRepositoryImpl.registrationUser(AuthRequest(email, password))
-                    _registrationState.update { currentState ->
-                        currentState.copy(isLoading = false, user = user)
+                    _registrationState.update { it.copy(isLoading = false, user = user)
                     }
+                    Log.d("aaa", user.toString())
                     sharedPreferencesManager.saveToken(user.accessToken)
                     sharedPreferencesManager.saveUserId(user.id)
                 } catch (e: Exception) {
-                    _registrationState.update { currentState ->
-                        currentState.copy(isLoading = false, errorMessage = e.message)
+                    _registrationState.update { it.copy(isLoading = false, errorMessage = e.message)
                     }
                 }
 

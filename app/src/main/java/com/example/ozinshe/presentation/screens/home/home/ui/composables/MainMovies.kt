@@ -2,7 +2,6 @@ package com.example.ozinshe.presentation.screens.home.home.ui.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,83 +16,46 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.ozinshe.data.models.MainMovie
-import com.example.ozinshe.presentation.screens.home.home.state.MainMoviesState
+import com.example.ozinshe.presentation.screens.home.home.viewmodel.HomeScreenViewModel
 import com.example.ozinshe.presentation.utils.getMovieType
-import com.example.ozinshe.presentation.utils.shimmerLoader
 
 @Composable
 fun MainMovies(
-    mainMoviesState: MainMoviesState,
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    when (mainMoviesState) {
-        is MainMoviesState.Success -> {
-            MainMovieList(movies = mainMoviesState.mainMovies)
-        }
+    val mainMoviesState by viewModel.mainMovieState.collectAsState()
 
-        is MainMoviesState.Error -> {
-            Text(text = mainMoviesState.error.toString())
-        }
-
-        MainMoviesState.Initial -> {
-            Text(text = "INITIAL")
-        }
-
-        MainMoviesState.Loading -> {
-            Row(
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-            ) {
-                repeat(3) { movie ->
-                    Column {
-                        Box(
-                            modifier = Modifier
-                                .height(160.dp)
-                                .width(300.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                        ) {
-                            Spacer(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .shimmerLoader()
-                            )
-                        }
-                        Spacer(modifier = Modifier.padding(top = 16.dp))
-                        Spacer(
-                            modifier = Modifier
-                                .height(20.dp)
-                                .width(100.dp)
-                                .shimmerLoader()
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
-            }
+    LaunchedEffect(mainMoviesState.mainMovies) {
+        if(mainMoviesState.mainMovies.isNullOrEmpty()) {
+            viewModel.fetchMainMovies()
         }
     }
-}
 
-
-@Composable
-fun MainMovieList(movies: List<MainMovie>) {
     LazyRow(
         modifier = Modifier
             .height(200.dp)
             .fillMaxWidth()
     ) {
-        items(movies) { movie ->
-            MainMovieItem(movie)
-            Spacer(modifier = Modifier.width(16.dp))
+        items(mainMoviesState.mainMovies!!) { movie ->
+            if (mainMoviesState.isLoading) {
+
+            } else {
+                MainMovieItem(movie)
+                Spacer(modifier = Modifier.width(16.dp))
+            }
         }
     }
 }
-
 
 @Composable
 fun MainMovieItem(movie: MainMovie) {

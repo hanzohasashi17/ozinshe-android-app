@@ -1,19 +1,14 @@
 package com.example.ozinshe.presentation.screens.home.home.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ozinshe.data.models.MainMovie
-import com.example.ozinshe.data.models.MovieByCategory
-import com.example.ozinshe.data.models.ServerResponse
 import com.example.ozinshe.data.repositories.MovieRepositoryImpl
 import com.example.ozinshe.presentation.screens.home.home.state.MainMoviesState
 import com.example.ozinshe.presentation.screens.home.home.state.MovieByCategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,31 +17,32 @@ class HomeScreenViewModel @Inject constructor(
     private val movieRepository: MovieRepositoryImpl,
 ) : ViewModel() {
 
-    private val _mainMovieUiState = MutableStateFlow<MainMoviesState>(MainMoviesState.Loading)
-    val mainMovieUiState: StateFlow<MainMoviesState> = _mainMovieUiState.asStateFlow()
+    private val _mainMovieState = MutableStateFlow(MainMoviesState())
+    val mainMovieState = _mainMovieState.asStateFlow()
 
-    private val _movieByCategoryUiState = MutableStateFlow<MovieByCategoryState>(MovieByCategoryState.Loading)
-    val movieByCategoryUiState: StateFlow<MovieByCategoryState> = _movieByCategoryUiState.asStateFlow()
+    private val _moviesByCategoryState = MutableStateFlow(MovieByCategoryState())
+    val moviesByCategoryState = _moviesByCategoryState.asStateFlow()
 
     fun fetchMainMovies() {
+        _mainMovieState.update { it.copy(isLoading = false, error = null) }
         viewModelScope.launch {
             try {
                 val mainMovies = movieRepository.getMainMovies()
-                _mainMovieUiState.value = MainMoviesState.Success(mainMovies)
+                _mainMovieState.update { it.copy(isLoading = false, mainMovies = mainMovies) }
             } catch (e: Exception) {
-                _mainMovieUiState.value = MainMoviesState.Error("Failed to main movies: ${e.message}")
+                _mainMovieState.update { it.copy(isLoading = false, error = e.message) }
             }
         }
     }
 
     fun fetchMoviesByCategory() {
-        viewModelScope.launch(Dispatchers.IO) {
+        _moviesByCategoryState.update { it.copy(isLoading = true, error = null) }
+        viewModelScope.launch {
             try {
-                val moviesByCategory: List<MovieByCategory> =
-                    movieRepository.getMoviesByCategory()
-                _movieByCategoryUiState.value = MovieByCategoryState.Success(moviesByCategory)
+                val moviesByCategory = movieRepository.getMoviesByCategory()
+                _moviesByCategoryState.update { it.copy(isLoading = false, movieList = moviesByCategory) }
             } catch (e: Exception) {
-                _movieByCategoryUiState.value = MovieByCategoryState.Error("Failed to movies category list:${e.message}")
+                _moviesByCategoryState.update { it.copy(isLoading = false, error = e.message) }
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.ozinshe.presentation.screens.profile.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,6 +57,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.ozinshe.R
 import com.example.ozinshe.presentation.screens.auth.viewmodel.AuthViewModel
+import com.example.ozinshe.presentation.screens.profile.viewmodel.ProfileViewModel
 import com.example.ozinshe.presentation.utils.HorizontalLine
 import kotlinx.coroutines.launch
 
@@ -64,8 +66,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(
     navToLoginScreen: () -> Unit,
+    navToProfileDataScreen: () -> Unit,
     authViewModel: AuthViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val testUrl = "https://w7.pngwing.com/pngs/421/391/png-transparent-himouto-umaru-chan-chibi-anime-manga-chibi-mammal-face-cat-like-mammal.png"
+
+    val profileState by profileViewModel.profileState.collectAsState()
+    Log.d("prof", profileState.toString())
     val isLoggedIn by authViewModel.userTokenState.collectAsState()
 
     LaunchedEffect(isLoggedIn) {
@@ -86,11 +94,13 @@ fun ProfileScreen(
     var selectedLanguage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.padding(top = 20.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(40.dp))
         Box(
-            modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -100,7 +110,7 @@ fun ProfileScreen(
                     .fillMaxWidth()
             ) {
                 IconButton(
-                    onClick = {  }
+                    onClick = { }
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -145,7 +155,7 @@ fun ProfileScreen(
                         .clip(RoundedCornerShape(percent = 50))
                 ) {
                     AsyncImage(
-                        model = R.drawable.onboarding1,
+                        model = testUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                     )
@@ -157,12 +167,15 @@ fun ProfileScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.padding(vertical = 2.dp))
-                Text(
-                    text = "nomadbaj@gmail.com",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                profileState.userData?.user?.email?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
+
         Column(
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp)
         ) {
@@ -184,7 +197,9 @@ fun ProfileScreen(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = navToProfileDataScreen
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                             contentDescription = null,
@@ -247,53 +262,7 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Ережелер мен шарттар",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-            HorizontalLine()
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Хабарландырулар",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                var checked by remember {
-                    mutableStateOf(false)
-                }
-                Switch(
-                    checked = checked,
-                    onCheckedChange = { checked = !checked },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.White,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = Color.White,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.primary,
-                        checkedBorderColor = MaterialTheme.colorScheme.primary,
-                        uncheckedBorderColor = MaterialTheme.colorScheme.primary
-                    )
-                )
-            }
-            HorizontalLine()
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Қараңғы режим",
+                    text = "Dark mode",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -449,3 +418,4 @@ fun ProfileScreen(
         }
     }
 }
+

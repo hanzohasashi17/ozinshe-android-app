@@ -1,9 +1,13 @@
 package com.example.ozinshe.presentation.screens.home.home.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -28,20 +32,12 @@ import com.example.ozinshe.presentation.screens.home.home.viewmodel.HomeScreenVi
 fun HomeScreen(
     navToMovieListScreen: (categoryId: Int?) -> Unit,
     navToMovieInfoScreen: (movieId: String) -> Unit,
-    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    val mainMoviesState by viewModel.mainMovieUiState.collectAsState()
-    val moviesByCategoryState by viewModel.movieByCategoryUiState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchMainMovies()
-        viewModel.fetchMoviesByCategory()
-    }
-
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .fillMaxHeight()
             .padding(horizontal = 24.dp, vertical = 60.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Row(
             modifier = Modifier
@@ -59,12 +55,9 @@ fun HomeScreen(
             )
         }
         Spacer(modifier = Modifier.height(15.dp))
-        MainMovies(
-            mainMoviesState = mainMoviesState
-        )
+        MainMovies()
         Spacer(modifier = Modifier.height(20.dp))
         MoviesByCategory(
-            moviesByCategoryState = moviesByCategoryState,
             navToMovieInfoScreen = navToMovieInfoScreen,
             navToMovieListScreen = navToMovieListScreen
         )

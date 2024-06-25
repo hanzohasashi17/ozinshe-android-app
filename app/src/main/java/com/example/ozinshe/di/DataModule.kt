@@ -1,33 +1,32 @@
 package com.example.ozinshe.di
 
-import android.app.Application
 import android.content.Context
-import coil.ImageLoader
-import coil.request.CachePolicy
-import com.example.ozinshe.data.datasources.movies.MovieNetworkDataSource
-import com.example.ozinshe.data.datasources.movies.MovieNetworkDataSourceImpl
-import com.example.ozinshe.data.datasources.movies.MovieRepository
-import com.example.ozinshe.data.datasources.localStorage.SharedPreferencesManager
 import com.example.ozinshe.data.datasources.auth.AuthInterceptor
 import com.example.ozinshe.data.datasources.auth.AuthNetworkDataSource
 import com.example.ozinshe.data.datasources.auth.AuthNetworkDataSourceImpl
 import com.example.ozinshe.data.datasources.auth.AuthRepository
 import com.example.ozinshe.data.datasources.auth.TokenProvider
+import com.example.ozinshe.data.datasources.localStorage.SharedPreferencesManager
+import com.example.ozinshe.data.datasources.movies.MovieNetworkDataSource
+import com.example.ozinshe.data.datasources.movies.MovieNetworkDataSourceImpl
+import com.example.ozinshe.data.datasources.movies.MovieRepository
+import com.example.ozinshe.data.datasources.profile.ProfileNetworkDataSource
+import com.example.ozinshe.data.datasources.profile.ProfileNetworkDataSourceImpl
+import com.example.ozinshe.data.datasources.profile.ProfileRepository
 import com.example.ozinshe.data.repositories.AuthRepositoryImpl
 import com.example.ozinshe.data.repositories.MovieRepositoryImpl
+import com.example.ozinshe.data.repositories.ProfileRepositoryImpl
 import com.example.ozinshe.data.services.AuthService
 import com.example.ozinshe.data.services.MovieService
+import com.example.ozinshe.data.services.ProfileService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import javax.inject.Singleton
 
 @Module
@@ -157,6 +156,31 @@ class DataModule {
     @Singleton
     fun provideMovieRepositoryImpl(movieNetworkDataSourceImpl: MovieNetworkDataSourceImpl): MovieRepository {
         return MovieRepositoryImpl(movieNetworkDataSourceImpl)
+    }
+
+
+
+
+
+
+
+    //  P R O F I L E
+    @Provides
+    @Singleton
+    fun provideProfileService(retrofit: Retrofit): ProfileService {
+        return retrofit.create(ProfileService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileNetworkDataSourceImpl(profileService: ProfileService): ProfileNetworkDataSource {
+        return ProfileNetworkDataSourceImpl(profileService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileRepositoryImpl(profileNetworkDataSourceImpl: ProfileNetworkDataSourceImpl): ProfileRepository {
+        return ProfileRepositoryImpl(profileNetworkDataSourceImpl)
     }
 
 }

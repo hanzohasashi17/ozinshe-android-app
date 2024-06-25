@@ -21,7 +21,7 @@ fun FavoriteMovieListComponent(movies: List<Movie>?) {
         LazyColumn {
             if (movies != null) {
                 items(movies, key = {item: Movie -> item.id}) { movie ->
-                    MovieListItem(movie = movie, navToInfoScreen = { })
+                    MovieListItem(movie = movie, movieImageUrl = movie.poster.link, navToInfoScreen = { })
                 }
             }
         }

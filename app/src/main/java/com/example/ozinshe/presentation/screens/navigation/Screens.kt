@@ -11,5 +11,7 @@ enum class Screens {
     MovieInfoScreen,
     YTPlayer,
     SeasonScreen,
-    MovieListScreen
+    MovieListScreen,
+    SplashScreen,
+    ProfileDataScreen
 }

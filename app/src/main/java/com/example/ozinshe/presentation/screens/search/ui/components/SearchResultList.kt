@@ -25,7 +25,7 @@ fun SearchResultList(movies: List<Movie>?) {
         LazyColumn {
             if (movies != null) {
                 items(movies) { movie ->
-                    MovieListItem(movie = movie, navToInfoScreen = { })
+                    MovieListItem(movie = movie, movieImageUrl = movie.poster.link, navToInfoScreen = { })
                 }
             }
         }

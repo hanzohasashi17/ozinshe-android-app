@@ -13,9 +13,10 @@ import okhttp3.internal.cacheGet
 @HiltAndroidApp
 class App: Application(), ImageLoaderFactory {
     override fun newImageLoader(): ImageLoader {
-        return ImageLoader(this).newBuilder()
+        return ImageLoader.Builder(this)
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
+            .respectCacheHeaders(false)
             .crossfade(true)
             .logger(DebugLogger())
             .build()

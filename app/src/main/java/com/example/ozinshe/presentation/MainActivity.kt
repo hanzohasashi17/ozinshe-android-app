@@ -1,13 +1,10 @@
 package com.example.ozinshe.presentation
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +15,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.ozinshe.presentation.screens.SplashScreen
 import com.example.ozinshe.presentation.screens.auth.viewmodel.AuthViewModel
 import com.example.ozinshe.presentation.screens.navigation.Screens
 import com.example.ozinshe.presentation.screens.navigation.ui.AppNavigation
@@ -26,13 +24,11 @@ import com.example.ozinshe.presentation.screens.onboarding.viewmodel.OnboardingV
 import com.example.ozinshe.presentation.screens.registration.ui.RegistrationScreen
 import com.example.ozinshe.presentation.theme.OzinsheTheme
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.wait
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val authViewModel: AuthViewModel by viewModels()
     private val onboardingViewModel: OnboardingViewModel by viewModels()
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("StateFlowValueCalledInComposition")
@@ -41,14 +37,13 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         super.onCreate(savedInstanceState)
+
         setContent {
             OzinsheTheme {
                 Surface(
                     color = MaterialTheme.colorScheme.surface
                 ) {
                     val navController = rememberNavController()
-
-                    val isLoggedIn by authViewModel.userTokenState.collectAsState()
                     val hasViewedOnboarding by onboardingViewModel.hasViewedOnboarding.collectAsState()
 
                     NavHost(
@@ -56,13 +51,23 @@ class MainActivity : ComponentActivity() {
                         startDestination = if (!hasViewedOnboarding) {
                             Screens.OnboardingScreen.name
                         } else {
-                            if (!isLoggedIn.isLogged) {
-                                Screens.RegistrationScreen.name
-                            } else {
-                                Screens.AppNavigation.name
-                            }
+                            Screens.SplashScreen.name
                         },
                     ) {
+                        composable(Screens.SplashScreen.name) {
+                            SplashScreen(
+                                goToLogin = { navController.navigate(Screens.RegistrationScreen.name) {
+                                    popUpTo(Screens.SplashScreen.name) {
+                                        inclusive = true
+                                    }
+                                } },
+                                goToHomeScreen = { navController.navigate(Screens.AppNavigation.name) {
+                                    popUpTo(Screens.SplashScreen.name) {
+                                        inclusive = true
+                                    }
+                                } }
+                            )
+                        }
                         composable(Screens.OnboardingScreen.name) {
                             OnboardingScreen(
                                 skipToHomeScreen = { navController.navigate(Screens.RegistrationScreen.name) }

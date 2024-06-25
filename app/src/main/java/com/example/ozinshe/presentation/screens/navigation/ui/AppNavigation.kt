@@ -10,9 +10,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -23,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ozinshe.presentation.screens.favorite.ui.FavoriteScreen
 import com.example.ozinshe.presentation.screens.home.home.ui.HomeScreen
+import com.example.ozinshe.presentation.screens.home.home.viewmodel.HomeScreenViewModel
 import com.example.ozinshe.presentation.screens.home.movie_info_screen.ui.MovieInfoScreen
 import com.example.ozinshe.presentation.screens.home.movie_list.ui.MovieListScreen
 import com.example.ozinshe.presentation.screens.home.season.ui.SeasonsScreen
@@ -30,6 +33,7 @@ import com.example.ozinshe.presentation.screens.home.ytplayer.YTPlayer
 import com.example.ozinshe.presentation.screens.navigation.Screens
 import com.example.ozinshe.presentation.screens.navigation.listOfNavItems
 import com.example.ozinshe.presentation.screens.navigation.navBarShowScreenList
+import com.example.ozinshe.presentation.screens.profile.ui.ProfileDataScreen
 import com.example.ozinshe.presentation.screens.profile.ui.ProfileScreen
 import com.example.ozinshe.presentation.screens.search.ui.SearchScreen
 
@@ -100,7 +104,10 @@ fun AppNavigation(
             composable(
                 route = Screens.ProfileScreen.name
             ) {
-                ProfileScreen(navToLoginScreen)
+                ProfileScreen(
+                    navToLoginScreen = navToLoginScreen,
+                    navToProfileDataScreen = { navController.navigate(Screens.ProfileDataScreen.name) }
+                )
             }
             composable(
                 route = "${Screens.MovieInfoScreen.name}/{movieId}",
@@ -137,6 +144,11 @@ fun AppNavigation(
                     categoryId = it.arguments?.getInt("categoryId"),
                     navToInfoScreen = { navController.navigate("${Screens.MovieInfoScreen.name}/${it}") }
                 )
+            }
+            composable(
+                route = Screens.ProfileDataScreen.name
+            ) {
+                ProfileDataScreen()
             }
         }
     }

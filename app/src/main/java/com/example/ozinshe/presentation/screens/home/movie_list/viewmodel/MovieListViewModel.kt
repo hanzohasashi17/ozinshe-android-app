@@ -7,6 +7,7 @@ import com.example.ozinshe.presentation.screens.home.movie_list.MovieListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,15 +15,19 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(
     private val moviesRepositoryImpl: MovieRepositoryImpl
 ) : ViewModel() {
-    private var _movieList = MutableStateFlow<MovieListState>(MovieListState.Initial)
-    val movieList = _movieList.asStateFlow()
+
+    private var _movieListState = MutableStateFlow(MovieListState())
+    val movieListState = _movieListState.asStateFlow()
 
     fun fetchMovieListByCategoryId(categoryId: Int) {
-        _movieList.value = MovieListState.Loading
+        _movieListState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            val data = moviesRepositoryImpl.getMoviesByCategoryId(categoryId)
-            _movieList.value = MovieListState.Success(data.content)
+            try {
+                val movies = moviesRepositoryImpl.getMoviesByCategoryId(categoryId)
+                _movieListState.update { it.copy(isLoading = false, movies = movies.content) }
+            } catch (e: Exception) {
+                _movieListState.update { it.copy(isLoading = false, error = e.message) }
             }
         }
-
+    }
 }

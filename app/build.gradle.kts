@@ -65,25 +65,19 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+
+    // Coil 4 images
+    implementation(libs.coil.compose)
+
+    // UTube
+    implementation(libs.youtubeplayer.compose)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-
-    // Coil 4 images
-    implementation(libs.coil.compose)
-
-    // ExoPlayer
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.androidx.media3.exoplayer.dash)
-    implementation(libs.androidx.media3.ui)
-    implementation(libs.android.youtubeExtractor)
-
-    // UTube
-    implementation(libs.youtubeplayer.compose)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
