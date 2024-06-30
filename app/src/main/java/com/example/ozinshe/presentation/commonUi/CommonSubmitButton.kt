@@ -1,4 +1,4 @@
-package com.example.ozinshe.presentation.composables.buttons
+package com.example.ozinshe.presentation.commonUi
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,14 +15,20 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SubmitButtonComponent(text: String, onClick: () -> Unit, topPadding: Dp = 24.dp) {
+fun CommonSubmitButton(
+    text: String,
+    onClick: () -> Unit,
+    topPadding: Dp = 24.dp
+) {
     Row(modifier = Modifier.padding(top = topPadding)) {
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-            modifier = Modifier.fillMaxWidth().height(56.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
             shape = RoundedCornerShape(12.dp)
-            ) {
+        ) {
             Text(
                 text,
                 color = MaterialTheme.colorScheme.onPrimary,

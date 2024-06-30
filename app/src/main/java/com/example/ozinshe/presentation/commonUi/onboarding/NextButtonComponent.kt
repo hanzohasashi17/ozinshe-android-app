@@ -1,4 +1,4 @@
-package com.example.ozinshe.presentation.composables.onboarding
+package com.example.ozinshe.presentation.commonUi.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -14,12 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview()
 @Composable
 fun NextButtonComponent(pagerState: PagerState) {
     val scope = rememberCoroutineScope()

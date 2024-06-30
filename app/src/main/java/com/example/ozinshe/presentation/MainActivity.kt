@@ -3,6 +3,7 @@ package com.example.ozinshe.presentation
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,11 +13,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavDestinationBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ozinshe.presentation.screens.SplashScreen
 import com.example.ozinshe.presentation.screens.auth.viewmodel.AuthViewModel
+import com.example.ozinshe.presentation.screens.login.ui.LoginScreen
 import com.example.ozinshe.presentation.screens.navigation.Screens
 import com.example.ozinshe.presentation.screens.navigation.ui.AppNavigation
 import com.example.ozinshe.presentation.screens.onboarding.ui.OnboardingScreen
@@ -56,16 +59,20 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Screens.SplashScreen.name) {
                             SplashScreen(
-                                goToLogin = { navController.navigate(Screens.RegistrationScreen.name) {
-                                    popUpTo(Screens.SplashScreen.name) {
-                                        inclusive = true
+                                goToLogin = {
+                                    navController.navigate(Screens.RegistrationScreen.name) {
+                                        popUpTo(Screens.SplashScreen.name) {
+                                            inclusive = true
+                                        }
                                     }
-                                } },
-                                goToHomeScreen = { navController.navigate(Screens.AppNavigation.name) {
-                                    popUpTo(Screens.SplashScreen.name) {
-                                        inclusive = true
+                                },
+                                goToHomeScreen = {
+                                    navController.navigate(Screens.AppNavigation.name) {
+                                        popUpTo(Screens.SplashScreen.name) {
+                                            inclusive = true
+                                        }
                                     }
-                                } }
+                                }
                             )
                         }
                         composable(Screens.OnboardingScreen.name) {
@@ -75,8 +82,14 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screens.RegistrationScreen.name) {
                             RegistrationScreen(
-                                onBackButtonClick = { navController.navigate(Screens.OnboardingScreen.name) },
-                                signInButtonClick = { navController.navigate(Screens.AppNavigation.name) }
+                                signUpButtonClick = { navController.navigate(Screens.AppNavigation.name) },
+                                navToLoginScreen = { navController.navigate(Screens.LoginScreen.name) }
+                            )
+                        }
+                        composable(Screens.LoginScreen.name) {
+                            LoginScreen(
+                                signInButtonClick = { navController.navigate(Screens.AppNavigation.name) },
+                                navToRegistrationScreen = { navController.navigate(Screens.RegistrationScreen.name) }
                             )
                         }
                         composable(Screens.AppNavigation.name) {

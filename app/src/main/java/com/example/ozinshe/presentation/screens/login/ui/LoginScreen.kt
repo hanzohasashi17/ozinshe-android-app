@@ -1,4 +1,4 @@
-package com.example.ozinshe.presentation.screens.registration.ui
+package com.example.ozinshe.presentation.screens.login.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,19 +25,17 @@ import com.example.ozinshe.R
 import com.example.ozinshe.presentation.commonUi.AuthHelpButton
 import com.example.ozinshe.presentation.commonUi.AuthTextField
 import com.example.ozinshe.presentation.commonUi.CommonSubmitButton
-import com.example.ozinshe.presentation.screens.registration.viewmodel.RegistrationViewModel
+import com.example.ozinshe.presentation.screens.login.viewmodel.LoginViewModel
 import com.example.ozinshe.presentation.theme.Dimension
 import com.example.ozinshe.presentation.validation.EmailValidation
 import com.example.ozinshe.presentation.validation.PasswordValidation
-import com.example.ozinshe.presentation.validation.RepeatPasswordValidation
-import com.example.ozinshe.presentation.validation.ValidationResult
 
 
 @Composable
-fun RegistrationScreen(
-    signUpButtonClick: () -> Unit,
-    navToLoginScreen: () -> Unit,
-    viewModel: RegistrationViewModel = hiltViewModel()
+fun LoginScreen(
+    signInButtonClick: () -> Unit,
+    navToRegistrationScreen: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
     var emailError by rememberSaveable { mutableStateOf("") }
@@ -45,15 +43,12 @@ fun RegistrationScreen(
     var password by rememberSaveable { mutableStateOf("") }
     var passwordError by rememberSaveable { mutableStateOf("") }
 
-    var repeatPassword by rememberSaveable { mutableStateOf("") }
-    var repeatPasswordError by rememberSaveable { mutableStateOf("") }
-
-    val screenState by viewModel.registrationState.collectAsState()
+    val screenState by viewModel.loginState.collectAsState()
 
     LaunchedEffect(screenState) {
         when {
             screenState.user != null -> {
-                signUpButtonClick()
+                signInButtonClick()
             }
         }
     }
@@ -68,13 +63,13 @@ fun RegistrationScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.signUpTitle),
+                text = stringResource(id = R.string.signInTitle),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(modifier = Modifier.height(Dimension.verticalSubPadding))
             Text(
-                text = stringResource(id = R.string.signUpTitleDesc),
+                text = stringResource(id = R.string.signInTitleDesc),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -97,38 +92,24 @@ fun RegistrationScreen(
             leftIconResource = R.drawable.ic_password,
             isPasswordField = true,
         )
-        AuthTextField(
-            initValue = repeatPassword,
-            errorMessage = repeatPasswordError,
-            onValueChange = { repeatPassword = it },
-            title = stringResource(id = R.string.passwordRepeatLabel),
-            placeholderText = stringResource(id = R.string.passwordPlaceholder),
-            leftIconResource = R.drawable.ic_password,
-            isPasswordField = true,
-        )
         Spacer(modifier = Modifier.height(Dimension.verticalPadding))
         CommonSubmitButton(
-            text = stringResource(id = R.string.signUpBtn),
             onClick = {
                 emailError = ""
                 passwordError = ""
-                repeatPasswordError = ""
                 when {
                     !EmailValidation.execute(email).successful -> {
                         emailError = EmailValidation.execute(email).errorMessage.toString()
                     }
+
                     !PasswordValidation.execute(password).successful -> {
                         passwordError = PasswordValidation.execute(password).errorMessage.toString()
                     }
-                    !RepeatPasswordValidation.execute(password, repeatPassword).successful -> {
-                        repeatPasswordError = RepeatPasswordValidation.execute(password, repeatPassword).errorMessage.toString()
-                    }
-                    else -> {
-                        viewModel.registration(email = email, password = password)
-                    }
-                }
 
-            }
+                    else -> viewModel.login(email = email, password = password)
+                }
+            },
+            text = stringResource(id = R.string.signInBtn),
         )
         Spacer(modifier = Modifier.height(Dimension.verticalSubPadding * 3f))
         Row(
@@ -137,10 +118,10 @@ fun RegistrationScreen(
             horizontalArrangement = Arrangement.Center
         ) {
             AuthHelpButton(
-                helpText = stringResource(id = R.string.help_to_login),
-                actionText = stringResource(id = R.string.signInBtn)
+                helpText = stringResource(id = R.string.help_to_register),
+                actionText = stringResource(id = R.string.signUpBtn)
             ) {
-                navToLoginScreen()
+                navToRegistrationScreen()
             }
         }
     }

@@ -72,6 +72,9 @@ dependencies {
     // UTube
     implementation(libs.youtubeplayer.compose)
 
+    // Icons
+    implementation(libs.androidx.material.icons.extended)
+
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

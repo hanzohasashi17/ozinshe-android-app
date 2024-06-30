@@ -18,7 +18,6 @@ class App: Application(), ImageLoaderFactory {
             .memoryCachePolicy(CachePolicy.ENABLED)
             .respectCacheHeaders(false)
             .crossfade(true)
-            .logger(DebugLogger())
             .build()
     }
 }

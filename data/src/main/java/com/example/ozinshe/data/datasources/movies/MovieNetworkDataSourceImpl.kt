@@ -1,13 +1,11 @@
 package com.example.ozinshe.data.datasources.movies
 
-import com.example.ozinshe.data.datasources.movies.MovieNetworkDataSource
 import com.example.ozinshe.data.models.FavoriteMovieDTO
 import com.example.ozinshe.data.models.MainMovie
 import com.example.ozinshe.data.models.Movie
 import com.example.ozinshe.data.models.MovieByCategory
 import com.example.ozinshe.data.models.MoviesByCategoryResult
 import com.example.ozinshe.data.models.Season
-import com.example.ozinshe.data.models.ServerResponse
 import com.example.ozinshe.data.services.MovieService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -6,6 +6,7 @@ enum class Screens {
     FavoriteScreen,
     ProfileScreen,
     RegistrationScreen,
+    LoginScreen,
     OnboardingScreen,
     AppNavigation,
     MovieInfoScreen,

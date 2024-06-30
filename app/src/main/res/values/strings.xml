@@ -1,14 +1,37 @@
 <resources>
+    // BASE
     <string name="app_name">Ozinshe</string>
-    <string name="ari_qarai">Әрі қарай</string>
-    <string name="salem">Сәлем</string>
-    <string name="akauntqa_kiriniz">Аккаунтқа кіріңіз</string>
-    <string name="sizdin_qupia_soziniz">Сіздің құпия сөзіңіз</string>
-    <string name="sizdin_email">Сіздің email</string>
-    <string name="tirkelu">Тіркелу</string>
-    <string name="qupia_soz">Құпия сөз</string>
-    <string name="qupia_sozdi_qaitalanyz">Құпия сөзді қайталаңыз</string>
-    <string name="sizde_akkaunt_bar_ma">Сізде аккаунт бар ма? Кіру</string>
-    <string name="derekterdi_toltyrynyz">Дерекетерді толтырыңыз</string>
-    <string name="title_activity_splash">SplashActivity</string>
+
+    // BUTTONS
+    <string name="nextBtn">Әрі қарай</string>
+    <string name="signInBtn">Кіру</string>
+    <string name="signUpBtn">Тіркелу</string>
+
+
+    // HELP TEXT
+    <string name="help_to_login">Сізде аккаунт бар ма?</string>
+    <string name="help_to_register">Аккаунт жоқ па?</string>
+
+
+    /// SCREENS SCREENS SCREENS SCREENS
+
+
+    // REGISTRATION
+    <string name="signUpTitle">Тіркелу</string>
+    <string name="signUpTitleDesc">Деректерді толтырыңыз</string>
+    <string name="emailPlaceholder">Сіздің email</string>
+    <string name="passwordLabel">Құпия сөз</string>
+    <string name="passwordPlaceholder">Сіздің құпия сөзіңіз</string>
+    <string name="passwordRepeatLabel">Құпия сөзді қайталаңыз</string>
+
+
+    // LOGIN
+    <string name="signInTitle">Сәлем</string>
+    <string name="signInTitleDesc">Аккаунтқа кіріңіз</string>
+
+
+
+
+
+
 </resources>

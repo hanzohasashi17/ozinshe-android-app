@@ -1,4 +1,4 @@
-package com.example.ozinshe.presentation.composables.onboarding
+package com.example.ozinshe.presentation.commonUi.onboarding
 
 import androidx.annotation.DrawableRes
 import com.example.ozinshe.R
