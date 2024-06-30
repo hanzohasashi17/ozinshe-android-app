@@ -7,13 +7,13 @@ On the OZINŞE service, every user between the ages of 9 and 16 with different t
 
 > App separated on 2 module. Common app module for working UI and  DI. And Data module.
 
+**LOCAL STORAGE:** Shared Preferences
 **DI:** Hilt
 **NETWORK:** Retrofit, OkHttp
 **UI PATTERN:** MVVM
 > State managment with jetpack viewmodel library
 
 **UI:** Jetpack Compose
-
 > The Composables were written in compliance with DRY principle
 
 
